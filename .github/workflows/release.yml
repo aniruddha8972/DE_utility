@@ -43,10 +43,15 @@ jobs:
           python -m pip install --upgrade build
           python -m build
 
-      - name: Create release zip
+      - name: Create Maven-style zip
         run: |
-          mkdir -p release-artifacts
-          git archive --format=zip --output release-artifacts/de-utility-release.zip "$GITHUB_REF_NAME"
+          version="${GITHUB_REF_NAME}"
+          artifact_dir="target/de-utility/${version}"
+          mkdir -p "$artifact_dir/src" release-artifacts
+          git archive --format=tar "$GITHUB_REF_NAME" | tar -x -C "$artifact_dir/src"
+          cd "$artifact_dir"
+          zip -r "../../de-utility-${version}.zip" .
+          cp "../../de-utility-${version}.zip" "release-artifacts/de-utility-${version}.zip"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
