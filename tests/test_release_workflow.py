@@ -18,6 +18,8 @@ def test_release_workflow_creates_release_zip() -> None:
     assert "Create Maven-style zip" in workflow_content
     assert "git archive" in workflow_content
     assert "github.event.inputs.release_tag || github.ref_name" in workflow_content
+    assert "fetch-depth: 0" in workflow_content
+    assert "ref:" in workflow_content
     assert "GITHUB_WORKSPACE" in workflow_content
     assert "release-tags.txt" in workflow_content
     assert "upload-artifact" in workflow_content

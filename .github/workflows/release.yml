@@ -17,10 +17,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.inputs.release_tag || github.ref_name }}
 
       - name: Validate release tag
         run: |
           tag_name="${{ github.event.inputs.release_tag || github.ref_name }}"
+          echo "Resolved release tag: $tag_name"
           if ! grep -Fxq "$tag_name" .github/release-tags.txt; then
             echo "Tag $tag_name is not an allowed release tag"
             exit 1
@@ -45,10 +49,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.inputs.release_tag || github.ref_name }}
 
       - name: Validate release tag
         run: |
           tag_name="${{ github.event.inputs.release_tag || github.ref_name }}"
+          echo "Resolved release tag: $tag_name"
           if ! grep -Fxq "$tag_name" .github/release-tags.txt; then
             echo "Tag $tag_name is not an allowed release tag"
             exit 1
