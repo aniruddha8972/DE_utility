@@ -43,11 +43,18 @@ jobs:
           python -m pip install --upgrade build
           python -m build
 
+      - name: Create release zip
+        run: |
+          mkdir -p release-artifacts
+          git archive --format=zip --output release-artifacts/de-utility-release.zip "$GITHUB_REF_NAME"
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: de-utility-dist
-          path: dist/
+          path: |
+            dist/
+            release-artifacts/
 
   publish:
     needs: build
