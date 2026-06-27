@@ -1,0 +1,8 @@
+name: databricks-demo
+source: databricks
+destination: databricks
+batch_size: 500
+metadata:
+  catalog: main
+  schema: default
+  table: demo_table

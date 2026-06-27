@@ -1,0 +1,32 @@
+name: de-utility-databricks-job
+spark_version: 3.5
+runtime: "13.3.x-scala2.12"
+python_version: "3.10"
+clusters:
+  - spark_conf:
+      spark.databricks.delta.preview.enabled: "true"
+    autoscale:
+      min_workers: 1
+      max_workers: 2
+    spark_env_vars:
+      PYSPARK_PYTHON_CMD: /usr/bin/python3
+jobs:
+  - name: de-utility-pipeline
+    tasks:
+      - task_key: run_pipeline
+        notebook_task:
+          notebook_path: /Workspace/Shared/de_utility_demo
+          source: WORKSPACE
+        existing_cluster_id: null
+        new_cluster:
+          spark_version: 3.5
+          node_type_id: standard_ds3_v2
+          num_workers: 1
+          spark_conf:
+            spark.databricks.delta.preview.enabled: "true"
+        libraries:
+          - pypi:
+              package: de-utility
+    schedule:
+      quartz_cron_expression: "0 0 6 * * ?"
+      timezone_id: UTC
