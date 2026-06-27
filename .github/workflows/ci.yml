@@ -29,11 +29,11 @@ jobs:
       - name: Create Maven-style zip
         run: |
           version="${GITHUB_REF_NAME:-ci}"
-          artifact_dir="target/de-utility/${version}"
+          artifact_dir="$GITHUB_WORKSPACE/target/de-utility/${version}"
           mkdir -p "$artifact_dir/src"
           git archive --format=tar HEAD | tar -x -C "$artifact_dir/src"
           cd "$artifact_dir"
-          zip -r "../../de-utility-${version}.zip" .
+          zip -r "$GITHUB_WORKSPACE/de-utility-${version}.zip" .
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
